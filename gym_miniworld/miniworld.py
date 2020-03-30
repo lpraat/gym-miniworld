@@ -461,7 +461,8 @@ class MiniWorldEnv(gym.Env):
         window_width=800,
         window_height=600,
         params=DEFAULT_PARAMS,
-        domain_rand=False
+        domain_rand=False,
+        external_reset_seed=None
     ):
         # Action enumeration for this environment
         self.actions = MiniWorldEnv.Actions
@@ -518,6 +519,7 @@ class MiniWorldEnv(gym.Env):
             y = window_height - (self.obs_disp_height + 19)
         )
 
+        self.external_reset_seed = external_reset_seed
         # Initialize the state
         self.seed()
         self.reset()
@@ -534,6 +536,8 @@ class MiniWorldEnv(gym.Env):
         Reset the simulation at the start of a new episode
         This also randomizes many environment parameters (domain randomization)
         """
+        if self.external_reset_seed is not None:
+            self.seed(self.external_reset_seed)
 
         # Step count since episode start
         self.step_count = 0
